@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Corner cases</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="common.html">
+  <link rel="import" href="../../paper-button/paper-button.html">
+  <link rel="import" href="../../paper-dialog/paper-dialog.html">
+
+  <style is="custom-style">
+    :root {
+      --default-primary-color: #2899f2;
+      --secondary-text-color: rgba(0,0,0,.12);
+    }
+  </style>
+</head>
+<body>
+  <section>
+    <paper-button onclick="openDialog('dialog')">plain dialog</paper-button>
+    <paper-button onclick="openDialog('modal')">modal dialog</paper-button>
+
+    <paper-dialog id="dialog">
+      <vaadin-combo-box id="combobox1"></vaadin-combo-box>
+    </paper-dialog>
+    <paper-dialog id="modal" modal>
+      <vaadin-combo-box id="combobox2"></vaadin-combo-box>
+      <div class="buttons">
+        <paper-button dialog-confirm autofocus>Tap me to close</paper-button>
+      </div>
+    </paper-dialog>
+  </section>
+  <script>
+    window.addEventListener('WebComponentsReady', function(e) {
+      var combobox1 = document.querySelector('#combobox1');
+      var combobox2 = document.querySelector('#combobox2');
+
+      combobox1.items = combobox2.items = elements;
+    });
+
+    function openDialog(id) {
+      var dialog = document.getElementById(id);
+      if (dialog) {
+        dialog.open();
+      }
+    }
+  </script>
+</body>
+</html>

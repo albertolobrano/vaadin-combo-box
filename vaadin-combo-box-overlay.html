@@ -11,10 +11,16 @@
   <style>
     :host {
       position: absolute;
-      z-index: 103;
       @apply(--shadow-elevation-2dp);
       background: #fff;
       border-radius: 0 0 2px 2px;
+
+      /**
+      * Keep the vaadin-combo-box-overlay above paper-dialogs.
+      * iron-overlay-manager.html: Polymer.IronOverlayManagerClass.prototype._applyOverlayZ
+      */
+      z-index: 200;
+      overflow: hidden;
     }
 
     #scroller {
@@ -98,6 +104,16 @@
           } catch (e) {
             return false;
           }
+        }
+      },
+
+      /**
+       * True if the device is an iOS device.
+       */
+      _iosDevice: {
+        type: Boolean,
+        value: function() {
+          return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         }
       },
 
@@ -209,6 +225,16 @@
 
     _preventDefault: function(e) {
       e.preventDefault();
+    },
+
+    _setOverlayAlignment: function(input) {
+      if (this._iosDevice) {
+        return false;
+      } else {
+        var spaceBelow = (window.innerHeight - input.getBoundingClientRect().bottom) / window.innerHeight;
+
+        this.alignAbove = spaceBelow < 0.30;
+      }
     }
   });
 </script>
